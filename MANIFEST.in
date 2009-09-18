@@ -1,0 +1,3 @@
+include config.h
+include include/*
+include _dbus_bindings/*.h

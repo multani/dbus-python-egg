@@ -40,3 +40,5 @@ Makefile
 dbus-python-*.tar.gz
 dbus-python-*.tar.gz.asc
 INSTALL
+dbus.egg-info
+dist
