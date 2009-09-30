@@ -62,8 +62,15 @@ def get_include_flags(package):
     """Return include flags for the specified pkg-config package name."""
 
     pkg_config = ['pkg-config', '--cflags-only-I', package]
-    proc = subprocess.Popen(pkg_config, close_fds=True,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    try:
+        proc = subprocess.Popen(pkg_config, close_fds=True,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+    except OSError, e:
+        print "Unable to execute pkg-config command: %s" % e
+        sys.exit(1)
+
     output = proc.stdout.read()
     err = proc.stderr.read()
 
