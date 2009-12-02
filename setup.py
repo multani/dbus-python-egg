@@ -23,6 +23,7 @@ to create this egg:
 """
 
 CONFIG_FILE = 'config.h'
+PKG_RELEASE = '-1'
 
 import os, sys
 
@@ -47,7 +48,9 @@ if version_search is None:
     sys.exit(1)
 else:
     version = version_search.groups()[0]
-    print "Found dbus-python version %r" % version
+    print "Egg contains dbus-python version %r" % version
+    version = version + PKG_RELEASE
+    print "Will install dbus-python version %r" % version
 
 
 
