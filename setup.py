@@ -61,6 +61,9 @@ import subprocess
 from setuptools import setup, Extension
 
 
+class UnavailablePackage(Exception):
+    """Raised if a package can't be found by pkg-config"""
+
 def get_include_flags(package):
     """Return include flags for the specified pkg-config package name."""
 
@@ -79,8 +82,8 @@ def get_include_flags(package):
     err = proc.stderr.read()
 
     if err != '':
-        raise OSError('Unable to get include flags for package %r. '
-                      'pkg-config error was:\n\n%s' % (package, err))
+        raise UnavailablePackage('Unable to get include flags for package %r. '
+                                 'pkg-config error was:\n\n%s' % (package, err))
 
     return [inc.strip()[2:]
         for inc in output.strip().split()
@@ -109,7 +112,7 @@ extensions = [
 try:
     GLIB_INCLUDE = get_include_flags('glib-2.0')
     GLIB_LIB=['glib-2.0', 'dbus-glib-1']
-except OSError:
+except UnavailablePackage:
     print "Compiled without glib bindings"
     pass
 else:
