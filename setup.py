@@ -68,8 +68,9 @@ def get_include_flags(package):
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
     except OSError, e:
-        print "Unable to execute pkg-config command: %s" % e
-        sys.exit(1)
+        raise OSError(e.errno,
+                      "Unable to execute command '%s': %s" %
+                      (' '.join(pkg_config), e))
 
     output = proc.stdout.read()
     err = proc.stderr.read()
