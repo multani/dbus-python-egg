@@ -1,3 +1,20 @@
+D-Bus Python Bindings 0.83.1 (2010-02-18)
+=========================================
+
+Fixes:
+
+* fd.o #21172: avoid some deprecation warnings in Python 2.6
+
+* fd.o #15013: add dbus.lowlevel.MESSAGE_TYPE_SIGNAL etc., for those who care
+  about message types at a low level
+
+* When removing signal matches, clean up internal state, avoiding a memory
+  leak in long-lived Python processes that connect to signals from arbitrarily
+  many object paths (fd.o #17551, thanks to Marco Pesenti Gritti)
+
+* When setting the sender of a message, allow it to be org.freedesktop.DBus
+  so you can implement a D-Bus daemon in pure Python (patch from Huang Peng)
+
 D-Bus Python Bindings 0.83.0 (2008-07-23)
 =========================================
 

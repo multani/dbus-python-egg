@@ -6,7 +6,7 @@ m4_define(dbus_python_released, 1)
 dnl The dbus-python version number (must actually be numeric at the moment)
 m4_define(dbus_python_major_version, 0)
 m4_define(dbus_python_minor_version, 83)
-m4_define(dbus_python_micro_version, 0)
+m4_define(dbus_python_micro_version, 1)
 
 m4_define(dbus_python_maybe_datestamp,
           m4_esyscmd([if test x]dbus_python_released[ != x1; then date +.%Y%m%d | tr -d '\n\r'; fi]))
@@ -19,6 +19,7 @@ dnl m4_define(glib_required_version, 2.8.0)
 AC_INIT(dbus-python, dbus_python_version,
         [http://bugs.freedesktop.org/enter_bug.cgi?product=dbus&component=python])
 AC_CONFIG_MACRO_DIR([m4])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
 AC_DEFINE(DBUS_PYTHON_MAJOR_VERSION, dbus_python_major_version, [dbus-python major version])
 AC_SUBST(DBUS_PYTHON_MAJOR_VERSION, dbus_python_major_version)
@@ -30,7 +31,7 @@ AC_SUBST(DBUS_PYTHON_MICRO_VERSION, dbus_python_micro_version)
 AC_CONFIG_SRCDIR([_dbus_bindings/module.c])
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.9])
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
@@ -143,16 +144,22 @@ AC_CHECK_LIB([dbus-1], [dbus_watch_get_unix_fd],
                         [Define if libdbus-1 has dbus_watch_get_unix_fd])],
              [:], [$DBUS_LIBS])
 
-dnl add required cflags ...
-JH_ADD_CFLAG([-Wall])
-JH_ADD_CFLAG([-Wextra])
-JH_ADD_CFLAG([-Wno-missing-field-initializers])
-JH_ADD_CFLAG([-Wdeclaration-after-statement])
-JH_ADD_CFLAG([-Wshadow])
-JH_ADD_CFLAG([-Wstrict-prototypes])
-JH_ADD_CFLAG([-Wmissing-prototypes])
-JH_ADD_CFLAG([-Wmissing-declarations])
-JH_ADD_CFLAG([-Wdeprecated-declarations])
+TP_COMPILER_WARNINGS([CFLAGS], [test] dbus_python_released [= 0],
+  [all \
+   extra \
+   declaration-after-statement \
+   deprecated-declarations \
+   shadow \
+   strict-prototypes \
+   missing-prototypes \
+   missing-declarations \
+   sign-compare \
+   nested-externs \
+   pointer-arith \
+   format-security \
+   init-self],
+  [missing-field-initializers])
+
 JH_ADD_CFLAG([-std=c9x])
 JH_ADD_CFLAG([-fno-strict-aliasing])
 
