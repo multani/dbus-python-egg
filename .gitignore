@@ -47,3 +47,4 @@ INSTALL
 /m4/lt~obsolete.m4
 dbus.egg-info
 dist
+build
